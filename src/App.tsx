@@ -16,13 +16,13 @@ function App() {
     const [filter, setFilter] = useState<FilterValuesType>('all');
 
     function removeTask(id: string) {
-        let filteredTasks = tasks.filter(task => task.id !== id);
+        const filteredTasks = tasks.filter(task => task.id !== id);
         setTasks(filteredTasks);
     }
     
     function addTask(title: string) {
-        let newTask = {id: v1(), title: title, isDone: false};
-        let newTasks = [newTask, ...tasks]
+        const newTask = {id: v1(), title: title, isDone: false};
+        const newTasks = [newTask, ...tasks]
         setTasks(newTasks);
     }
     
