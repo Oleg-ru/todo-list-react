@@ -25,6 +25,14 @@ function App() {
         const newTasks = [newTask, ...tasks]
         setTasks(newTasks);
     }
+
+    function changeStatus(taskId: string, isDone: boolean) {
+        const task = tasks.find(task => task.id === taskId);
+        if (task) {
+            task.isDone = isDone;
+        }
+        setTasks([...tasks]);
+    }
     
     function changeFilter(value: FilterValuesType) {
         setFilter(value);
@@ -45,6 +53,8 @@ function App() {
                       removeTask={removeTask}
                       changeFilter={changeFilter}
                       addTask={addTask}
+                      changeTaskStatus={changeStatus}
+                      filter={filter}
             />
         </>
     );
