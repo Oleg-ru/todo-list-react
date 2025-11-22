@@ -8,7 +8,7 @@ import {Menu} from '@mui/icons-material';
 
 export type FilterValuesType = "all" | "completed" | "active";
 
-type TodolistType = {
+export type TodolistType = {
     id: string
     title: string
     filter: FilterValuesType
@@ -19,6 +19,21 @@ type TaskStateType = {
 }
 
 function App() {
+
+    const todoList1 = v1();
+    const todoList2 = v1();
+
+    const [todoLists, setTodoLists] = useState<Array<TodolistType>>([
+        {id: todoList1, title: "What to learn", filter: "all"},
+        {id: todoList2, title: "What to buy", filter: "all"},
+    ]);
+
+    function removeTodolist(todoListId: string) {
+        setTodoLists(todoLists.filter(todoList => todoList.id !== todoListId));
+
+        delete tasksObj[todoListId];
+        setTasksObj({...tasksObj});
+    };
 
     function removeTask(id: string, todolistId: string) {
 
@@ -63,22 +78,6 @@ function App() {
             setTodoLists([...todoLists]);
         }
     }
-
-    const todoList1 = v1();
-    const todoList2 = v1();
-
-    const [todoLists, setTodoLists] = useState<Array<TodolistType>>([
-        {id: todoList1, title: "What to learn", filter: "all"},
-        {id: todoList2, title: "What to buy", filter: "all"},
-    ]);
-
-    const removeTodolist = (todoListId: string) => {
-        const filteredTodoList = todoLists.filter(todoList => todoList.id !== todoListId);
-        setTodoLists(filteredTodoList);
-
-        delete tasksObj[todoListId];
-        setTasksObj({...tasksObj});
-    };
 
     const [tasksObj, setTasksObj] = useState<TaskStateType>({
         [todoList1]: [
