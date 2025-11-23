@@ -14,12 +14,11 @@ export type TodolistType = {
     filter: FilterValuesType
 }
 
-type TaskStateType = {
+export type TaskStateType = {
     [key: string]: Array<TaskType>
 }
 
 function App() {
-
     const todoList1 = v1();
     const todoList2 = v1();
 
@@ -27,13 +26,19 @@ function App() {
         {id: todoList1, title: "What to learn", filter: "all"},
         {id: todoList2, title: "What to buy", filter: "all"},
     ]);
-
-    function removeTodolist(todoListId: string) {
-        setTodoLists(todoLists.filter(todoList => todoList.id !== todoListId));
-
-        delete tasksObj[todoListId];
-        setTasksObj({...tasksObj});
-    };
+    const [tasksObj, setTasksObj] = useState<TaskStateType>({
+        [todoList1]: [
+            {id: v1(), title: "HTML&CSS", isDone: true},
+            {id: v1(), title: "JS", isDone: true},
+            {id: v1(), title: "React", isDone: false},
+            {id: v1(), title: "Redux", isDone: false},
+        ],
+        [todoList2]: [
+            {id: v1(), title: "Robot", isDone: false},
+            {id: v1(), title: "Tomas", isDone: true},
+            {id: v1(), title: "Kastryla", isDone: true},
+        ]
+    });
 
     function removeTask(id: string, todolistId: string) {
 
@@ -71,6 +76,7 @@ function App() {
         }
     }
 
+
     function changeFilter(value: FilterValuesType, todoListId: string) {
         const todoList = todoLists.find(todoList => todoList.id === todoListId);
         if (todoList) {
@@ -79,19 +85,12 @@ function App() {
         }
     }
 
-    const [tasksObj, setTasksObj] = useState<TaskStateType>({
-        [todoList1]: [
-            {id: v1(), title: "HTML&CSS", isDone: true},
-            {id: v1(), title: "JS", isDone: true},
-            {id: v1(), title: "React", isDone: false},
-            {id: v1(), title: "Redux", isDone: false},
-        ],
-        [todoList2]: [
-            {id: v1(), title: "Robot", isDone: false},
-            {id: v1(), title: "Tomas", isDone: true},
-            {id: v1(), title: "Kastryla", isDone: true},
-        ]
-    });
+    function removeTodolist(todoListId: string) {
+        setTodoLists(todoLists.filter(todoList => todoList.id !== todoListId));
+
+        delete tasksObj[todoListId];
+        setTasksObj({...tasksObj});
+    };
 
     function changeTodolistTitle(id: string, newTitle: string) {
         // const todoList = todoLists.find(todoList => todoList.id === id);
