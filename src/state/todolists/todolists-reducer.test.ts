@@ -1,6 +1,6 @@
 import {expect, test} from "vitest";
 import {v1} from "uuid";
-import type {TodolistType} from "../App.tsx";
+import type {TodolistType} from "../../App.tsx";
 import {
     addTodolistAC, changeTodolistFilterAC,
     changeTodolistTitleAC,
