@@ -1,6 +1,11 @@
 import type {TaskStateType} from "../../App.tsx";
 import {v1} from "uuid";
-import type {AddTodolistActionType, RemoveTodolistActionType} from "../todolists/todolists-reducer.ts";
+import {
+    type AddTodolistActionType,
+    type RemoveTodolistActionType,
+    todoList1,
+    todoList2
+} from "../todolists/todolists-reducer.ts";
 
 export type RemoveTaskActionType = {
     type: "REMOVE-TASK"
@@ -32,7 +37,22 @@ type ActionsType = RemoveTaskActionType | AddTaskActionType
     | ChangeTaskStatusActionType | ChangeTaskTitleActionType
     | AddTodolistActionType | RemoveTodolistActionType
 
-export const taskReducer = (state: TaskStateType, action: ActionsType): TaskStateType => {
+
+const initalState: TaskStateType = {
+    [todoList1]: [
+        {id: v1(), title: "HTML&CSS", isDone: true},
+        {id: v1(), title: "JS", isDone: true},
+        {id: v1(), title: "React", isDone: false},
+        {id: v1(), title: "Redux", isDone: false},
+    ],
+    [todoList2]: [
+        {id: v1(), title: "Robot", isDone: false},
+        {id: v1(), title: "Tomas", isDone: true},
+        {id: v1(), title: "Kastryla", isDone: true},
+    ]
+};
+
+export const taskReducer = (state: TaskStateType = initalState, action: ActionsType): TaskStateType => {
     switch (action.type) {
         case 'REMOVE-TASK': {
             const copyState = {...state};
@@ -63,12 +83,7 @@ export const taskReducer = (state: TaskStateType, action: ActionsType): TaskStat
         case 'CHANGE-TASK-STATUS': {
             const stateCopy = {...state};
             const tasks = stateCopy[action.todolistId];
-            const task = tasks.find(task => task.id === action.taskId);
-            if (task) {
-                task.isDone = action.isDone;
-            }
-
-            stateCopy[action.todolistId] = tasks;
+            stateCopy[action.todolistId] = tasks.map(task => task.id === action.taskId ? {...task, isDone: action.isDone} : task)
 
             return stateCopy;
         }
@@ -100,7 +115,7 @@ export const taskReducer = (state: TaskStateType, action: ActionsType): TaskStat
         }
 
         default:
-            throw new Error("I do not understand this action type")
+            return state
     }
 };
 
