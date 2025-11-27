@@ -7,9 +7,9 @@ import {store} from "./state/store.ts";
 
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+  //<StrictMode>
       <Provider store={store}>
           <AppWithRedux />
       </Provider>
-  </StrictMode>,
+  //</StrictMode>,
 )

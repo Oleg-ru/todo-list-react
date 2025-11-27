@@ -3,8 +3,6 @@ import {v1} from "uuid";
 import {
     type AddTodolistActionType,
     type RemoveTodolistActionType,
-    todoList1,
-    todoList2
 } from "../todolists/todolists-reducer.ts";
 
 export type RemoveTaskActionType = {
@@ -38,7 +36,7 @@ type ActionsType = RemoveTaskActionType | AddTaskActionType
     | AddTodolistActionType | RemoveTodolistActionType
 
 
-const initalState: TaskStateType = {
+const initalState: TaskStateType = {/*
     [todoList1]: [
         {id: v1(), title: "HTML&CSS", isDone: true},
         {id: v1(), title: "JS", isDone: true},
@@ -49,7 +47,7 @@ const initalState: TaskStateType = {
         {id: v1(), title: "Robot", isDone: false},
         {id: v1(), title: "Tomas", isDone: true},
         {id: v1(), title: "Kastryla", isDone: true},
-    ]
+    ] */
 };
 
 export const taskReducer = (state: TaskStateType = initalState, action: ActionsType): TaskStateType => {
@@ -89,13 +87,16 @@ export const taskReducer = (state: TaskStateType = initalState, action: ActionsT
         }
 
         case 'CHANGE-TASK-TITLE': {
+            //тут делается поверхностное копирование т.е объекты внутри имеют те же ссылки
             const stateCopy = {...state};
-            const tasks = stateCopy[action.todolistId];
+            const tasks = [...stateCopy[action.todolistId]];//1я правка, что нужно сделать копию внутрянки
 
             const task = tasks.find(task => task.id === action.taskId);
             if (task) {
                 task.title = action.newTitle;
             }
+
+            stateCopy[action.todolistId] = tasks; //2я правка, заменяю на свой измененный массив тасок
 
             return stateCopy;
         }
